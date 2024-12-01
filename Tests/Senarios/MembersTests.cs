@@ -4,11 +4,11 @@ using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
-namespace buk_klab_Tests.Pages;
+namespace buk_klab_Tests.Tests.Pages;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-public class SignIn : PageTest
+public class Members : PageTest
 {
     [SetUp]
     public async Task Setup()
