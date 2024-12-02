@@ -15,6 +15,13 @@ public static class DependencyContainer
             return await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
         });
 
+
+        services.AddScoped(async serviceProvider =>
+        {
+            var browser = await serviceProvider.GetRequiredService<Task<IBrowser>>();
+            return await browser.NewPageAsync();
+        });
+
         services.AddTransient<HomePage>();
         services.AddTransient<SignInPage>();
         services.AddTransient<BooksPage>();
