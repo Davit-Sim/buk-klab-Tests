@@ -8,7 +8,7 @@ namespace buk_klab_Tests.Tests.Pages;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-public class BooksTests : PageTest
+public class BooksPageTests : PageTest
 {
     [SetUp]
     public async Task Setup()
