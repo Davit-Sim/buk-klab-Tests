@@ -1,0 +1,10 @@
+//For future cloud CI/CD pipelines
+{
+  "RunConfiguration": {
+    "Environment": "Development"
+  },
+  "Parameters": {
+    "Playwright:BaseUrl": "http://cloud-dev.local/",
+    "Playwright:BrowserOptions:Headless": "true"
+  }
+}

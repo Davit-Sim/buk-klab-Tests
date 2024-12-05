@@ -6,5 +6,5 @@ public class HomePageTests : BasePage
     public async Task VerifyHomePageIntroductoryText()
     {
         await _homePage.IsIntroductoryTextAsync();
-    }
+    }        
 }
