@@ -1,4 +1,5 @@
-﻿using buk_klab_Tests.Tests.Pages;
+﻿using buk_klab_Tests.Tests.Layout;
+using buk_klab_Tests.Tests.Pages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Playwright;
@@ -13,6 +14,7 @@ public class BasePage
     protected HomePage _homePage;
     protected MembersPage _membersPage;
     protected SignInPage _signinPage;
+    protected SiteHeader _header;
 
     [SetUp]
     public async Task Setup()
@@ -22,13 +24,14 @@ public class BasePage
             _serviceProvider = DependencyContainer.BuildServiceProvider();
 
             _browser = await _serviceProvider.GetRequiredService<Task<IBrowser>>();
-            page = await _browser.NewPageAsync();
-           
+            page = _serviceProvider.GetRequiredService<IPage>();
+
             _aboutPage = ActivatorUtilities.CreateInstance<AboutPage>(_serviceProvider, page);
             _booksPage = ActivatorUtilities.CreateInstance<BooksPage>(_serviceProvider, page);
             _homePage = ActivatorUtilities.CreateInstance<HomePage>(_serviceProvider, page);
             _membersPage = ActivatorUtilities.CreateInstance<MembersPage>(_serviceProvider, page);
             _signinPage = ActivatorUtilities.CreateInstance<SignInPage>(_serviceProvider, page);
+            _header = ActivatorUtilities.CreateInstance<SiteHeader>(_serviceProvider, page);
 
             await NavigateToHomePageUrlAsync(page);
         }
@@ -38,7 +41,7 @@ public class BasePage
             throw;
         }
     }
-
+        
     [TearDown]
     public async Task Teardown()
     {
