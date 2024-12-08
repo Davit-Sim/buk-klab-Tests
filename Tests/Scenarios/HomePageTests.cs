@@ -1,10 +1,15 @@
+using buk_klab_Tests.Tests.Pages;
+
 namespace buk_klab_Tests.Pages;
 
 public class HomePageTests : BasePage
 {
     [Test]
-    public async Task VerifyHomePageIntroductoryText()
+    public async Task AllElementsLoadedOnHomePage()
     {
-        await _homePage.IsIntroductoryTextAsync();
-    }        
+        HomePage homePage = new HomePage(page);
+        var elemtsExists = await homePage.AllElementsAreVisible();
+        Assert.IsTrue(elemtsExists);
+        await homePage.ClickJoinBookKlab();
+    }
 }
