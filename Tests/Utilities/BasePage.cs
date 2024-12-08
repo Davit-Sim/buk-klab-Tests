@@ -24,8 +24,8 @@ public class BasePage
             _serviceProvider = DependencyContainer.BuildServiceProvider();
 
             _browser = await _serviceProvider.GetRequiredService<Task<IBrowser>>();
-            page = await _browser.NewPageAsync();
-           
+            page = _serviceProvider.GetRequiredService<IPage>();
+
             _aboutPage = ActivatorUtilities.CreateInstance<AboutPage>(_serviceProvider, page);
             _booksPage = ActivatorUtilities.CreateInstance<BooksPage>(_serviceProvider, page);
             _homePage = ActivatorUtilities.CreateInstance<HomePage>(_serviceProvider, page);
