@@ -2,6 +2,7 @@
 using buk_klab_Tests.Tests.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Playwright;
+using buk_klab_Tests.Tests.Layout;
 
 public static class DependencyContainer
 {
@@ -39,18 +40,30 @@ public static class DependencyContainer
             return await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = headless });
         });
 
+        services.AddSingleton(async provider =>
+        {
+            var browser = await provider.GetRequiredService<Task<IBrowser>>();
+            return await browser.NewPageAsync();
+        });
+
+        services.AddSingleton(provider =>
+        {
+            var pageTask = provider.GetRequiredService<Task<IPage>>();
+            return pageTask.GetAwaiter().GetResult();
+        });
+
         // Register page objects
         services.AddTransient<HomePage>(provider =>
         {
             var page = provider.GetRequiredService<Task<IPage>>().Result;
-            return new HomePage(page);
+            var header = provider.GetRequiredService<SiteHeader>();
+            return new HomePage(page, header);
         });
 
-        services.AddTransient<SignInPage>(provider =>
+         services.AddTransient<SiteHeader>(provider =>
         {
-            var page = provider.GetRequiredService<Task<IPage>>().Result;
-            var configuration = provider.GetRequiredService<IConfiguration>();
-            return new SignInPage(page, configuration);
+            var page = provider.GetRequiredService<IPage>();
+            return new SiteHeader(page);
         });
 
         services.AddTransient<BooksPage>(provider =>
@@ -69,9 +82,9 @@ public static class DependencyContainer
 
         services.AddTransient<MembersPage>(provider =>
         {
-             var page = provider.GetRequiredService<Task<IPage>>().Result;
-             var configuration = provider.GetRequiredService<IConfiguration>();
-             return new MembersPage(page, configuration);
+            var page = provider.GetRequiredService<Task<IPage>>().Result;
+            var configuration = provider.GetRequiredService<IConfiguration>();
+            return new MembersPage(page, configuration);
         });
 
         return services.BuildServiceProvider();
