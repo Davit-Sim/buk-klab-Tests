@@ -40,11 +40,39 @@ public static class DependencyContainer
         });
 
         // Register page objects
-        services.AddTransient<HomePage>();
-        services.AddTransient<SignInPage>();
-        services.AddTransient<BooksPage>();
-        services.AddTransient<AboutPage>();
-        services.AddTransient<MembersPage>();
+        services.AddTransient<HomePage>(provider =>
+        {
+            var page = provider.GetRequiredService<Task<IPage>>().Result;
+            return new HomePage(page);
+        });
+
+        services.AddTransient<SignInPage>(provider =>
+        {
+            var page = provider.GetRequiredService<Task<IPage>>().Result;
+            var configuration = provider.GetRequiredService<IConfiguration>();
+            return new SignInPage(page, configuration);
+        });
+
+        services.AddTransient<BooksPage>(provider =>
+        {
+            var page = provider.GetRequiredService<Task<IPage>>().Result;
+            var configuration = provider.GetRequiredService<IConfiguration>();
+            return new BooksPage(page, configuration);
+        });
+
+        services.AddTransient<AboutPage>(provider =>
+        {
+            var page = provider.GetRequiredService<Task<IPage>>().Result;
+            var configuration = provider.GetRequiredService<IConfiguration>();
+            return new AboutPage(page, configuration);
+        });
+
+        services.AddTransient<MembersPage>(provider =>
+        {
+             var page = provider.GetRequiredService<Task<IPage>>().Result;
+             var configuration = provider.GetRequiredService<IConfiguration>();
+             return new MembersPage(page, configuration);
+        });
 
         return services.BuildServiceProvider();
     }

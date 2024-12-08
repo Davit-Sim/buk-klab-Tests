@@ -7,6 +7,7 @@ public class BasePage
 {
     protected ServiceProvider _serviceProvider;
     protected IBrowser _browser;
+    protected IPage page;
     protected AboutPage _aboutPage;
     protected BooksPage _booksPage;
     protected HomePage _homePage;
@@ -21,8 +22,8 @@ public class BasePage
             _serviceProvider = DependencyContainer.BuildServiceProvider();
 
             _browser = await _serviceProvider.GetRequiredService<Task<IBrowser>>();
-            var page = await _browser.NewPageAsync();
-
+            page = await _browser.NewPageAsync();
+           
             _aboutPage = ActivatorUtilities.CreateInstance<AboutPage>(_serviceProvider, page);
             _booksPage = ActivatorUtilities.CreateInstance<BooksPage>(_serviceProvider, page);
             _homePage = ActivatorUtilities.CreateInstance<HomePage>(_serviceProvider, page);
